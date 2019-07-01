@@ -99,6 +99,10 @@ public class ApplicationStores {
 
                 contentConnection = makeConnection(props);
                 contentStoreDesc  = makeStoreDesc(props);
+
+                if(contentStoreDesc == null) {
+                	System.exit(-1);
+                }				
                 Store store = SDBFactory.connectStore(contentConnection, contentStoreDesc);
                 if (store == null) {
                     throw new RuntimeException("Unable to connect to SDB content triple store");
@@ -237,8 +241,8 @@ public class ApplicationStores {
             try {
                 OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(output, false));
                 try {
-                    if (LayoutType.LayoutTripleNodesHash.equals(contentStoreDesc.getLayout()) ||
-                        LayoutType.LayoutTripleNodesIndex.equals(contentStoreDesc.getLayout())) {
+                    if (contentStoreDesc != null && (LayoutType.LayoutTripleNodesHash.equals(contentStoreDesc.getLayout()) ||
+                        LayoutType.LayoutTripleNodesIndex.equals(contentStoreDesc.getLayout()))) {
                         if (DatabaseType.MySQL.equals(contentStoreDesc.getDbType()) ||
                                 DatabaseType.PostgreSQL.equals(contentStoreDesc.getDbType())) {
 
